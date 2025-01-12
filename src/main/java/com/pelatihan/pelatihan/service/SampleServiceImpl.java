@@ -6,14 +6,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.pelatihan.pelatihan.dto.PageResponse;
 import com.pelatihan.pelatihan.dto.SampleDto;
 import com.pelatihan.pelatihan.dto.UpdateSampleDto;
 import com.pelatihan.pelatihan.model.Sample;
 import com.pelatihan.pelatihan.repository.SampleRepository;
+import com.pelatihan.pelatihan.repository.specification.SampleSpecification;
 
 @Service
 public class SampleServiceImpl implements SampleService {
@@ -31,23 +34,50 @@ public class SampleServiceImpl implements SampleService {
     @Override
     public List<SampleDto> findAll(String name,Pageable pageable) {
         return sampleRepository.findAll(name, pageable)
-                .stream()
-                .map(this::mapToSampleDto)
-                .toList();
+                                .stream()
+                                .map(this::mapToSampleDto)
+                                .toList();
     }
 
+
     @Override
-    public List<SampleDto>findAllWithFilter(String name, String code, Boolean status, Pageable pageable){
+    public PageResponse<SampleDto>findAllWithFilter(String name, String code, Boolean status, Pageable pageable){
         Specification<Sample> spec = Specification.where(null);
-        
-        return List.of();
+
+        // name
+        spec = spec.and(SampleSpecification.containName(name));
+
+        // code
+        if(code != null && !code.isEmpty()){
+            spec = spec.and(SampleSpecification.equalCode(code));
+        }
+
+        // status
+        if(status != null){
+            spec = spec.and(SampleSpecification.equalStatus(status)); 
+        }
+
+        Page<Sample> samplePage = sampleRepository.findAll(spec,pageable);
+
+        return PageResponse.<SampleDto>builder()
+                            .page(pageable.getPageNumber())
+                            .size(pageable.getPageSize())
+                            .totalPage(samplePage.getTotalPages())
+                            .totalItem(samplePage.getTotalElements())
+                            .items(samplePage.stream()
+                                              .map(this::mapToSampleDto)
+                                              .toList())
+                            .build();
+
     }
+
 
     @Override
     public void create(SampleDto dto) {
         sampleRepository.save(mapToSampleDto(dto));
 
     }
+
 
     @Override
     public void update(int id, UpdateSampleDto dto) {
@@ -63,12 +93,14 @@ public class SampleServiceImpl implements SampleService {
         });
     }
 
+
     @Override
     public void delete(int id) {
         Optional<Sample> sample = sampleRepository.findById(id);
         sample.ifPresent(sampleRepository::delete);
 
     }
+
 
     // find-all
     public SampleDto mapToSampleDto(Sample sample) {
@@ -80,6 +112,7 @@ public class SampleServiceImpl implements SampleService {
                 .status(sample.getStatus())
                 .build();
     }
+
 
     // create
     public Sample mapToSampleDto(SampleDto dto) {
