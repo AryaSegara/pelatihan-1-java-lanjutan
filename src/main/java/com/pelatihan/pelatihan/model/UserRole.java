@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 
 
-public class UsersRole {
+public class UserRole {
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true, nullable = false)
