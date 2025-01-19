@@ -14,6 +14,8 @@ import com.pelatihan.pelatihan.repository.RoleRepository;
 import com.pelatihan.pelatihan.repository.UserRoleRepository;
 import com.pelatihan.pelatihan.repository.UsersRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService{
 
 
     // register users
+    @Transactional
     @Override
     public void register(RegisterUserDto dto){
         Users users = new Users();
