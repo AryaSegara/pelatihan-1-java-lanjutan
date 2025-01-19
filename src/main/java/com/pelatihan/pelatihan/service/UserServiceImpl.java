@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService{
     }
 
 
+    // register users
     @Override
     public void register(RegisterUserDto dto){
         Users users = new Users();
