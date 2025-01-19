@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pelatihan.pelatihan.dto.RegisterUserDto;
+import com.pelatihan.pelatihan.dto.RoleDto;
+import com.pelatihan.pelatihan.model.Role;
+import com.pelatihan.pelatihan.model.UserRole;
 import com.pelatihan.pelatihan.model.Users;
 import com.pelatihan.pelatihan.repository.RoleRepository;
 import com.pelatihan.pelatihan.repository.UserRoleRepository;
@@ -38,5 +41,19 @@ public class UserServiceImpl implements UserService{
         users.setStatus(true);
         users.setCreatedDate(LocalDate.now());
         users.setUpdateDate(LocalDate.now());
+
+        users = usersRepository.save(users);
+
+        for(RoleDto roleDto : dto.getRoles()){
+            Role role = roleRepository.findById(roleDto.getId()).orElse(null);
+
+            UserRole userRole = new UserRole();
+            userRole.setUsers(users);
+            userRole.setRole(role);
+
+            userRoleRepository.save(userRole);
+        }
     }
+
+
 }
