@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.pelatihan.pelatihan.dto.GenericResponse;
 import com.pelatihan.pelatihan.dto.SampleDto;
@@ -71,12 +72,32 @@ public class SampleController {
     @PutMapping("/update/{id}")
     public ResponseEntity<GenericResponse<Object>> update(@PathVariable int id ,
                                          @RequestBody UpdateSampleDto dto){
-        sampleService.update(id, dto);
+                                        
+        try{
+            sampleService.update(id, dto);
+
+        }catch(ResponseStatusException ex){
+            return ResponseEntity.status(ex.getStatusCode()).body(GenericResponse.builder()
+                                .success(true)
+                                .message(ex.getReason())
+                                .data(null)
+                                .build());
+
+        } catch(Exception e){
+            return ResponseEntity.internalServerError().body(GenericResponse.builder()
+                                .success(true)
+                                .message("Terjadi kesalahan di sistem internal")
+                                .data(null)
+                                .build());
+        }
+        
         return ResponseEntity.ok().body(GenericResponse.builder()
                             .success(true)
                             .message("Data berhasil di update")
                             .data(null)
                             .build());
+
+
     }
 
     @DeleteMapping("/delete/{id}")

@@ -20,7 +20,10 @@ import com.pelatihan.pelatihan.model.Sample;
 import com.pelatihan.pelatihan.repository.SampleRepository;
 import com.pelatihan.pelatihan.repository.specification.SampleSpecification;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j // libary untuk log (untuk debugging)
 public class SampleServiceImpl implements SampleService {
 
     private final SampleRepository sampleRepository;
@@ -96,6 +99,7 @@ public class SampleServiceImpl implements SampleService {
                 sampleRepository.save(sampleToUpdate);
             
         }else{
+            log.info("Sample id yang di cari : {}", id);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " sample id tidak ditemukan");
         }
 
