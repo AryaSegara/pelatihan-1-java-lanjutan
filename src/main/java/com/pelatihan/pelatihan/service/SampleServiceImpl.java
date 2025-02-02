@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.pelatihan.pelatihan.dto.PageResponse;
 import com.pelatihan.pelatihan.dto.SampleDto;
@@ -83,14 +85,20 @@ public class SampleServiceImpl implements SampleService {
     public void update(int id, UpdateSampleDto dto) {
         Optional<Sample> sample = sampleRepository.findById(id);
 
-        sample.ifPresent(sampleToUpdate -> {
-            sampleToUpdate.setName(dto.getName());
-            sampleToUpdate.setCode(dto.getCode());
-            sampleToUpdate.setDescription(dto.getDescription());
-            sampleToUpdate.setStatus(dto.getStatus());
-            sampleToUpdate.setUpdateDate(LocalDate.now());
-            sampleRepository.save(sampleToUpdate);
-        });
+        if(sample.isPresent()){
+
+            Sample sampleToUpdate = sample.get();
+                sampleToUpdate.setName(dto.getName());
+                sampleToUpdate.setCode(dto.getCode());
+                sampleToUpdate.setDescription(dto.getDescription());
+                sampleToUpdate.setStatus(dto.getStatus());
+                sampleToUpdate.setUpdateDate(LocalDate.now());
+                sampleRepository.save(sampleToUpdate);
+            
+        }else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " sample id tidak ditemukan");
+        }
+
     }
 
 
