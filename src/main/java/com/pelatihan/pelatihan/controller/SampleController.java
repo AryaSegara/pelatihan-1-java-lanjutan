@@ -77,6 +77,7 @@ public class SampleController {
             sampleService.update(id, dto);
 
         }catch(ResponseStatusException ex){
+            ex.printStackTrace();
             return ResponseEntity.status(ex.getStatusCode()).body(GenericResponse.builder()
                                 .success(true)
                                 .message(ex.getReason())
@@ -90,7 +91,7 @@ public class SampleController {
                                 .data(null)
                                 .build());
         }
-        
+
         return ResponseEntity.ok().body(GenericResponse.builder()
                             .success(true)
                             .message("Data berhasil di update")
