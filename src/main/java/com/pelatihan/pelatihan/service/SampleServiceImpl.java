@@ -99,7 +99,7 @@ public class SampleServiceImpl implements SampleService {
                 sampleRepository.save(sampleToUpdate);
             
         }else{
-            log.debug("Sample id yang di cari : {}", id);
+            log.debug("Sample id yang di cari : {}", id); // ini muncul ketika di level  nya di ubah ke level debug
             log.info("Sample id yang di cari : {}", id);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " sample id tidak ditemukan");
         }
