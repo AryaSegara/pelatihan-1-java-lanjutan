@@ -76,7 +76,6 @@ public class SampleServiceImpl implements SampleService {
 
     }
 
-
     @Override
     public void create(SampleDto dto) {
         sampleRepository.save(mapToSampleDto(dto));
