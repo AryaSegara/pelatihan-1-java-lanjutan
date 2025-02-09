@@ -1,5 +1,6 @@
 package com.pelatihan.pelatihan.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,16 +8,31 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.pelatihan.pelatihan.dto.GenericResponse;
+import com.pelatihan.pelatihan.dto.LoginDto;
+import com.pelatihan.pelatihan.service.LoginService;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/login")
 public class LoginController {
+    private final LoginService loginService;
+
+    @Autowired
+    public LoginController(LoginService loginService) {
+        this.loginService = loginService;
+    }
+
     
     @PostMapping
-    public ResponseEntity<Object> login(){
+    public ResponseEntity<Object> login(@RequestBody LoginDto dto){
         try {
             
-            return null;
+            return ResponseEntity.ok().body(GenericResponse.builder()
+                                        .success(true)
+                                        .message("Successfully login")
+                                        .data(loginService.login(null))
+                                        .build());
 
         } catch (ResponseStatusException rse) {
             return ResponseEntity.status(rse.getStatusCode())
@@ -34,5 +50,5 @@ public class LoginController {
                                         .build());
         }
     }
-    
+
 }
