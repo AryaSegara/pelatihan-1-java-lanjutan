@@ -31,6 +31,12 @@ public class LoginServiceImpl implements LoginService{
         Optional<Users> optionalUsers = usersRepository.findByUsername(dto.getUsername());
 
         if(optionalUsers.isPresent()){
+            Users users = optionalUsers.get();
+            if(dto.getPassword().equals(users.getPassword())){
+                // Generic jwt token
+            }else{
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username atau Password Salah");
+            }
 
         }else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username atau Password Salah");
