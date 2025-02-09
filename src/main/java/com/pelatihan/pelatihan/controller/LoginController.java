@@ -17,7 +17,7 @@ public class LoginController {
         try {
             
             return null;
-            
+
         } catch (ResponseStatusException rse) {
             return ResponseEntity.status(rse.getStatusCode())
                                         .body(GenericResponse.builder()
@@ -34,4 +34,5 @@ public class LoginController {
                                         .build());
         }
     }
+    
 }
