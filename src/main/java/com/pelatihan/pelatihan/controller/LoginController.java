@@ -16,6 +16,8 @@ public class LoginController {
     public ResponseEntity<Object> login(){
         try {
             
+            return null;
+            
         } catch (ResponseStatusException rse) {
             return ResponseEntity.status(rse.getStatusCode())
                                         .body(GenericResponse.builder()
@@ -31,6 +33,5 @@ public class LoginController {
                                         .data(null)
                                         .build());
         }
-        return null;
     }
 }
