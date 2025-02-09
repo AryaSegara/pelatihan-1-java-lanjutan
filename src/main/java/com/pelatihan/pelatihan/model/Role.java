@@ -24,7 +24,7 @@ public class Role {
     private int id;
 
     @Column(name = "role_name", length = 100)
-    private String username;
+    private String roleName;
 
     @Column(name = "created_date", columnDefinition = "DATE")
     private LocalDate createdDate;
