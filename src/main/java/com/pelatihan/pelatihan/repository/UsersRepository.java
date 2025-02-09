@@ -8,4 +8,5 @@ import com.pelatihan.pelatihan.model.Users;
 
 public interface UsersRepository extends JpaRepository <Users, Integer>{
     Optional<Users> findByUsername(String username);
+    
 }
