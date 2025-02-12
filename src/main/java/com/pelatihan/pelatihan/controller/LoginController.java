@@ -27,7 +27,6 @@ public class LoginController {
     @PostMapping
     public ResponseEntity<Object> login(@RequestBody LoginDto dto){
         try {
-            
             return ResponseEntity.ok().body(GenericResponse.builder()
                                         .success(true)
                                         .message("Successfully login")
