@@ -24,9 +24,9 @@ import com.pelatihan.pelatihan.service.SampleService;
 @RestController
 @RequestMapping("/sample")
 public class SampleController {
+    @Autowired
     private final SampleService sampleService;
 
-    @Autowired
     SampleController(SampleService sampleService){
         this.sampleService = sampleService;
     }

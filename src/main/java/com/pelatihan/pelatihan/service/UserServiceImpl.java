@@ -19,11 +19,11 @@ import jakarta.transaction.Transactional;
 @Service
 public class UserServiceImpl implements UserService{
 
+    @Autowired
     private final UsersRepository usersRepository;
     private final RoleRepository roleRepository;
     private final UserRoleRepository userRoleRepository;
 
-    @Autowired
     UserServiceImpl(UsersRepository usersRepository,
                     RoleRepository roleRepository,
                     UserRoleRepository userRoleRepository){

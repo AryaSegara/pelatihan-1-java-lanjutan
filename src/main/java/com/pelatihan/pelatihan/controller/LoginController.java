@@ -16,9 +16,10 @@ import com.pelatihan.pelatihan.service.LoginService;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
+    
+    @Autowired
     private final LoginService loginService;
 
-    @Autowired
     public LoginController(LoginService loginService) {
         this.loginService = loginService;
     }

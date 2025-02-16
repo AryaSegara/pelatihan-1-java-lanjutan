@@ -26,9 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j // libary untuk log (untuk debugging)
 public class SampleServiceImpl implements SampleService {
 
+    @Autowired
     private final SampleRepository sampleRepository;
 
-    @Autowired
     public SampleServiceImpl(SampleRepository sampleRepository) {
         this.sampleRepository = sampleRepository;
     }

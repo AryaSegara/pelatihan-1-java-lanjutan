@@ -16,6 +16,7 @@ import com.pelatihan.pelatihan.model.Users;
 import com.pelatihan.pelatihan.provider.JwtProvider;
 import com.pelatihan.pelatihan.repository.UserRoleRepository;
 import com.pelatihan.pelatihan.repository.UsersRepository;
+import com.pelatihan.pelatihan.util.PasswordUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,11 +24,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoginServiceImpl implements LoginService{
 
+    @Autowired
     private final UsersRepository usersRepository;
     private final UserRoleRepository userRoleRepository;
     private final JwtProvider jwtProvider;
 
-    @Autowired
     public LoginServiceImpl(UsersRepository usersRepository, UserRoleRepository userRoleRepository, JwtProvider jwtProvider) {
         this.usersRepository = usersRepository;
         this.userRoleRepository = userRoleRepository;
@@ -41,7 +42,10 @@ public class LoginServiceImpl implements LoginService{
 
         if(optionalUsers.isPresent()){
             Users users = optionalUsers.get();
-            if(dto.getPassword().equals(users.getPassword())){
+
+
+            log.info(PasswordUtil.hash(dto.getPassword()));
+            if(PasswordUtil.check(dto.getPassword(), users.getPassword())){
                 // Generic jwt token
 
                 List<UserRole> userRoles = userRoleRepository.findByUsers(users);
@@ -50,7 +54,6 @@ public class LoginServiceImpl implements LoginService{
                                                 .collect(Collectors.toList());
 
                 String accessToken = jwtProvider.generateToken(users.getId(), users.getUsername(),roles);
-
 
 
                 return UserDetailDto.builder()

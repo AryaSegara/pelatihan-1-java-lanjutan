@@ -5,9 +5,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 
+@Service
+@Slf4j
 public class JwtProvider {
     
     @Value("${jwt.secret}")
