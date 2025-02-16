@@ -13,6 +13,7 @@ import com.pelatihan.pelatihan.model.Users;
 import com.pelatihan.pelatihan.repository.RoleRepository;
 import com.pelatihan.pelatihan.repository.UserRoleRepository;
 import com.pelatihan.pelatihan.repository.UsersRepository;
+import com.pelatihan.pelatihan.util.PasswordUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -21,7 +22,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private final UsersRepository usersRepository;
+    @Autowired
     private final RoleRepository roleRepository;
+    @Autowired
     private final UserRoleRepository userRoleRepository;
 
     UserServiceImpl(UsersRepository usersRepository,
@@ -41,7 +44,8 @@ public class UserServiceImpl implements UserService{
         Users users = new Users();
         users.setId(dto.getId());
         users.setUsername(dto.getUsername());
-        users.setPassword(dto.getPassword());
+        // users.setPassword(dto.getPassword());
+        users.setPassword(PasswordUtil.hash(dto.getPassword())); // meng hashing password
         users.setStatus(true);
         users.setCreatedDate(LocalDate.now());
         users.setUpdateDate(LocalDate.now());

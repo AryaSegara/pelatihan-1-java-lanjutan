@@ -2,7 +2,7 @@ package com.pelatihan.pelatihan.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+// import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,9 @@ public class LoginServiceImpl implements LoginService{
 
     @Autowired
     private final UsersRepository usersRepository;
+    @Autowired
     private final UserRoleRepository userRoleRepository;
+    @Autowired
     private final JwtProvider jwtProvider;
 
     public LoginServiceImpl(UsersRepository usersRepository, UserRoleRepository userRoleRepository, JwtProvider jwtProvider) {
@@ -43,17 +45,16 @@ public class LoginServiceImpl implements LoginService{
         if(optionalUsers.isPresent()){
             Users users = optionalUsers.get();
 
-
             //  ini untuk mengecek hashing password nya atau munculin hashing passwordnya di terminalnya
             log.info(PasswordUtil.hash(dto.getPassword()));
 
             if(PasswordUtil.check(dto.getPassword(), users.getPassword())){
-                
+
                 // Generic jwt token
                 List<UserRole> userRoles = userRoleRepository.findByUsers(users);
                 List<String> roles = userRoles.stream()
                                                 .map(userRole -> userRole.getRole().getRoleName())
-                                                .collect(Collectors.toList());
+                                                .toList();
 
                 String accessToken = jwtProvider.generateToken(users.getId(), users.getUsername(),roles);
 

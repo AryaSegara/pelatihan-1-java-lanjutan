@@ -14,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtProvider {
     
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret.key}")
     private String secretKey;
 
-    @Value("${jwt.access-token-validity}")
+    @Value("${jwt.token.validity}")
     private Long accessTokenValidity;
 
     public String generateToken(Integer userId, String username, List<String> role) {
