@@ -16,12 +16,12 @@ public class JwtProvider {
     @Value("${jwt.access-token-validity}")
     private Long accessTokenValidity;
 
-    public String generateToken(String userId, String username, String role) {
+    public String generateToken(String userId, String username, List<String> role) {
 
         Claims claims = Jwts.claims().setSubject(userId);
         claims.setId(userId);
         claims.put("username", username);
-        claims.put("authorities", List.of(role));
+        claims.put("authorities", role);
 
         Date tokenCreateTime = new Date();
         Date tokenValidity = new Date(tokenCreateTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
