@@ -20,7 +20,7 @@ public class JwtProvider {
 
         Claims claims = Jwts.claims().setSubject(userId);
         claims.setId(userId);
-        claims.put("email", username);
+        claims.put("username", username);
         claims.put("authorities", List.of(role));
 
         Date tokenCreateTime = new Date();
