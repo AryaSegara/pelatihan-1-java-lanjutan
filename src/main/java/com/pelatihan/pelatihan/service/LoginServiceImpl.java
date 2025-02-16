@@ -44,15 +44,19 @@ public class LoginServiceImpl implements LoginService{
             if(dto.getPassword().equals(users.getPassword())){
                 // Generic jwt token
 
-
                 List<UserRole> userRoles = userRoleRepository.findByUsers(users);
+                List<String> roles = userRoles.stream()
+                                                .map(userRole -> userRole.getRole().getRoleName())
+                                                .collect(Collectors.toList());
+
+                String accessToken = jwtProvider.generateToken(users.getId(), users.getUsername(),roles);
+
+
 
                 return UserDetailDto.builder()
                                     .username(users.getUsername())
-                                    .role(userRoles.stream()
-                                                    .map(userRole -> userRole.getRole().getRoleName())
-                                                    .collect(Collectors.joining(",")))
-                                                    
+                                    .role(String.join("," ,roles))
+                                    .accessToken(accessToken)      
                                     .build();
             }else{
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username atau Password Salah");

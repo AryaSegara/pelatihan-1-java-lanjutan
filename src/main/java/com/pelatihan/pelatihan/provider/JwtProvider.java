@@ -16,10 +16,10 @@ public class JwtProvider {
     @Value("${jwt.access-token-validity}")
     private Long accessTokenValidity;
 
-    public String generateToken(String userId, String username, List<String> role) {
+    public String generateToken(Integer userId, String username, List<String> role) {
 
-        Claims claims = Jwts.claims().setSubject(userId);
-        claims.setId(userId);
+        Claims claims = Jwts.claims().setSubject(String.valueOf(userId));
+        claims.setId(String.valueOf(userId));
         claims.put("username", username);
         claims.put("authorities", role);
 
