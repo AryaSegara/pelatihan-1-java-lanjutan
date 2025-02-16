@@ -44,10 +44,12 @@ public class LoginServiceImpl implements LoginService{
             Users users = optionalUsers.get();
 
 
+            //  ini untuk mengecek hashing password nya atau munculin hashing passwordnya di terminalnya
             log.info(PasswordUtil.hash(dto.getPassword()));
-            if(PasswordUtil.check(dto.getPassword(), users.getPassword())){
-                // Generic jwt token
 
+            if(PasswordUtil.check(dto.getPassword(), users.getPassword())){
+                
+                // Generic jwt token
                 List<UserRole> userRoles = userRoleRepository.findByUsers(users);
                 List<String> roles = userRoles.stream()
                                                 .map(userRole -> userRole.getRole().getRoleName())
