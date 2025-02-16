@@ -13,6 +13,7 @@ import com.pelatihan.pelatihan.dto.LoginDto;
 import com.pelatihan.pelatihan.dto.UserDetailDto;
 import com.pelatihan.pelatihan.model.UserRole;
 import com.pelatihan.pelatihan.model.Users;
+import com.pelatihan.pelatihan.provider.JwtProvider;
 import com.pelatihan.pelatihan.repository.UserRoleRepository;
 import com.pelatihan.pelatihan.repository.UsersRepository;
 
@@ -24,11 +25,13 @@ public class LoginServiceImpl implements LoginService{
 
     private final UsersRepository usersRepository;
     private final UserRoleRepository userRoleRepository;
+    private final JwtProvider jwtProvider;
 
     @Autowired
-    public LoginServiceImpl(UsersRepository usersRepository, UserRoleRepository userRoleRepository) {
+    public LoginServiceImpl(UsersRepository usersRepository, UserRoleRepository userRoleRepository, JwtProvider jwtProvider) {
         this.usersRepository = usersRepository;
         this.userRoleRepository = userRoleRepository;
+        this.jwtProvider = jwtProvider;
     }
 
     @Override
