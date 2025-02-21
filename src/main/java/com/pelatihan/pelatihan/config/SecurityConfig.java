@@ -13,13 +13,15 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> 
                             auth.requestMatchers("/login",
+                                            "/users/register",
                                             "/api-docs/**",
                                             "/swagger-ui/**",
                                             "/swagger-ui.html")
                             .permitAll()
+                            .requestMatchers("/admin/**").hasAuthority("Admin")
                             .anyRequest()
                             .authenticated())
                 .build();
     }
-    
+
 }

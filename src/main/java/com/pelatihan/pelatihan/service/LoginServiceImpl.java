@@ -46,7 +46,7 @@ public class LoginServiceImpl implements LoginService{
             Users users = optionalUsers.get();
 
             //  ini untuk mengecek hashing password nya atau munculin hashing passwordnya di terminalnya
-            log.info(PasswordUtil.hash(dto.getPassword()));
+            // log.info(PasswordUtil.hash(dto.getPassword()));
 
             if(PasswordUtil.check(dto.getPassword(), users.getPassword())){
 

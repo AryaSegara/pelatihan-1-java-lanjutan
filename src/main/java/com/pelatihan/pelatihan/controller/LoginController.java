@@ -24,7 +24,7 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    
+
     @PostMapping
     public ResponseEntity<Object> login(@RequestBody LoginDto dto){
         try {
