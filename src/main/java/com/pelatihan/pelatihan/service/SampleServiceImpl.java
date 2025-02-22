@@ -33,8 +33,7 @@ public class SampleServiceImpl implements SampleService {
         this.sampleRepository = sampleRepository;
     }
 
-    List<Sample> samples = new ArrayList<>();
-
+    // List<Sample> samples = new ArrayList<>();
 
     @Override
     public List<SampleDto> findAll(String name,Pageable pageable) {
