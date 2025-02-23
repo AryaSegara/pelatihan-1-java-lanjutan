@@ -67,20 +67,23 @@ public class JwtProvider {
         return claims.getExpiration().after(new Date());
     }
 
-    private Claims parserJwtClaims(String token){
+    private Claims parseJwtClaims(String token){
         return jwtParser.parseClaimsJws(token).getBody();
     }
 
     private Claims resolveClaims(HttpServletRequest request){
+        
         try{
             String token = resolveToken(request);
             if(token != null){
                 return parseJwtClaims(token);
             }
             return null;
+
         }catch(ExpiredJwtException ex){
             request.setAttribute("expired", ex.getMessage());
             throw ex;
+
         }catch(Exception ex){
             request.setAttribute("invalid", ex.getMessage());
         }
