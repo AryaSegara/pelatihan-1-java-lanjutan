@@ -3,9 +3,13 @@ package com.pelatihan.pelatihan.filter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.pulsar.PulsarProperties.Authentication;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.pelatihan.pelatihan.dto.UserCredentialsDto;
 import com.pelatihan.pelatihan.provider.JwtProvider;
 
 import io.jsonwebtoken.Claims;
@@ -43,17 +47,17 @@ public class JwtFilter {
                 String username = claims.getSubject();
                 List<String> roles = (List<String>) claims.get("authorities");
 
+
                 UserCredentialsDto credentialPayload = new UserCredentialsDto();
-                credentialPayload.setUserId(claims.getId());
-                credentialPayload.setEmail(claims.get("email").toString());
+                credentialPayload.setUserId(Integer.valueOf(claims.getId()));
+                credentialPayload.setUsername(claims.get("username").toString());
 
 
-                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                Authentication authentication  = new UsernamePasswordAuthenticationToken(
                     username,
                     credentialPayload, 
-                    roles.stream().map(aLong -> 
-                                        new simpleGrantedAuthority(String.valueOf(aLong)))
-                                        .toList();
+                    roles.stream().map(aLong -> new SimpleGrantedAuthority(String.valueOf(aLong)))
+                                    .toList());
 
                 SecutiryContextHolder.getContext().setAuthentication(authentication);
             }

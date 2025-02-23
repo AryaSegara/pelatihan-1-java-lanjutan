@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.*;
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -19,6 +21,19 @@ public class JwtProvider {
 
     @Value("${jwt.token.validity}")
     private Long accessTokenValidity;
+
+    @Value("${jwt.header}")
+    private String header;
+
+    @Value("${jwt.prefix}")
+    private String prefix;
+
+    private JwtParser jwtParser;
+
+    @PostConstruct
+    public void init(){
+        this.jwtParser = Jwts.parser().setSigningKey(secretKey);
+    }
 
     public String generateToken(Integer userId, String username, List<String> role) {
 
@@ -35,6 +50,40 @@ public class JwtProvider {
                     .setExpiration(tokenValidity)
                     .signWith(SignatureAlgorithm.HS512, secretKey)
                     .compact();
+    }
+
+
+    public String resolveToken(HttpServletRequest request){
+        String bearerToken = request.getHeader(header);
+        if(bearerToken != null && bearerToken.startsWith(prefix)){
+            return bearerToken.substring(prefix.length());
+        }
+
+        return null;
+    }
+
+
+    public boolean validateClaims(Claims claims){
+        return claims.getExpiration().after(new Date());
+    }
+
+    private Claims parserJwtClaims(String token){
+        return jwtParser.parseClaimsJws(token).getBody();
+    }
+
+    private Claims resolveClaims(HttpServletRequest request){
+        try{
+            String token = resolveToken(request);
+            if(token != null){
+                return parseJwtClaims(token);
+            }
+            return null;
+        }catch(ExpiredJwtException ex){
+            request.setAttribute("expired", ex.getMessage());
+            throw ex;
+        }catch(Exception ex){
+            request.setAttribute("invalid", ex.getMessage());
+        }
     }
 
 
