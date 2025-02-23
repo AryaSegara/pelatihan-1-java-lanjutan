@@ -48,7 +48,7 @@ public class JwtProvider {
         return Jwts.builder()
                     .setClaims(claims)
                     .setExpiration(tokenValidity)
-                    .signWith(SignatureAlgorithm.HS512, secretKey)
+                    .signWith(SignatureAlgorithm.HS512, secretKey) // ini HS512 untuk algoritma tokennya
                     .compact();
     }
 
