@@ -22,7 +22,7 @@ public class JwtProvider {
     @Value("${jwt.token.validity}")
     private Long accessTokenValidity;
 
-    @Value("${jwt.headers}")
+    @Value("${jwt.header}")
     private String header;
 
     @Value("${jwt.prefix}")
