@@ -71,21 +71,22 @@ public class JwtProvider {
         return jwtParser.parseClaimsJws(token).getBody();
     }
 
-    private Claims resolveClaims(HttpServletRequest request){
-        
+    public Claims resolveClaims(HttpServletRequest req){
+
         try{
-            String token = resolveToken(request);
+            String token = resolveToken(req);
             if(token != null){
                 return parseJwtClaims(token);
             }
             return null;
 
         }catch(ExpiredJwtException ex){
-            request.setAttribute("expired", ex.getMessage());
+            req.setAttribute("expired", ex.getMessage());
             throw ex;
 
         }catch(Exception ex){
-            request.setAttribute("invalid", ex.getMessage());
+            req.setAttribute("invalid", ex.getMessage());
+            throw ex;
         }
     }
 

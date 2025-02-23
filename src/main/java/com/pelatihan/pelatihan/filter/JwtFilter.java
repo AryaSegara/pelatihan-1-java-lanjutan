@@ -1,26 +1,29 @@
 package com.pelatihan.pelatihan.filter;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.pulsar.PulsarProperties.Authentication;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.pelatihan.pelatihan.dto.UserCredentialsDto;
 import com.pelatihan.pelatihan.provider.JwtProvider;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class JwtFilter {
+public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
     private final JwtProvider jwtProvider;
@@ -32,7 +35,7 @@ public class JwtFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request , 
                                     HttpServletResponse response,
-                                    FilterChain filterChain) throws {
+                                    FilterChain filterChain)  throws IOException, ServletException{
         
         try {
             String accessToken = jwtProvider.resolveToken(request);
@@ -59,7 +62,7 @@ public class JwtFilter {
                     roles.stream().map(aLong -> new SimpleGrantedAuthority(String.valueOf(aLong)))
                                     .toList());
 
-                SecutiryContextHolder.getContext().setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
         } catch (Exception e) {
