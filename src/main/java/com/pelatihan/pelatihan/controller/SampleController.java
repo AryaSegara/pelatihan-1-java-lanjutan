@@ -34,7 +34,7 @@ public class SampleController {
     @GetMapping("/find-All")
     public ResponseEntity<GenericResponse<Object>> findAll(@RequestParam int page,
                                                             @RequestParam int size,
-                                                            @RequestParam String name){
+                                                            @RequestParam(required = false) String name){
         Pageable pageable = PageRequest.of(page,size);
                                                                 
         return ResponseEntity.ok().body(GenericResponse.builder()
