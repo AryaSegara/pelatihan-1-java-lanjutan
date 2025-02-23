@@ -1,10 +1,14 @@
 package com.pelatihan.pelatihan.filter;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import com.pelatihan.pelatihan.provider.JwtProvider;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,9 +28,41 @@ public class JwtFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request , 
                                     HttpServletResponse response,
-                                    FilterChain filterChain) {
+                                    FilterChain filterChain) throws {
         
-        
+        try {
+            String accessToken = jwtProvider.resolveToken(request);
+            if(accessToken == null){
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+
+            Claims claims = jwtProvider.resolveClaims(request);
+            if(claims != null && jwtProvider.validateClaims(claims)){
+                String username = claims.getSubject();
+                List<String> roles = (List<String>) claims.get("authorities");
+
+                UserCredentialsDto credentialPayload = new UserCredentialsDto();
+                credentialPayload.setUserId(claims.getId());
+                credentialPayload.setEmail(claims.get("email").toString());
+
+
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    username,
+                    credentialPayload, 
+                    roles.stream().map(aLong -> 
+                                        new simpleGrantedAuthority(String.valueOf(aLong)))
+                                        .toList();
+
+                SecutiryContextHolder.getContext().setAuthentication(authentication);
+            }
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+
+        filterChain.doFilter(request, response);
         
     }
 }
