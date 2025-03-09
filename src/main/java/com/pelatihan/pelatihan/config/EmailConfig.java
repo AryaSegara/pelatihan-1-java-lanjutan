@@ -15,7 +15,7 @@ public class EmailConfig {
     private String mailHost;
 
     @Value("${mail.port}")
-    private String mailPort; 
+    private Integer mailPort; 
 
     @Value("${mail.username}")
     private String mailUsername;
@@ -30,7 +30,7 @@ public class EmailConfig {
     private String mailStarttls;
 
     @Value("${mail.auth}")
-    private String mailAut;
+    private String mailAuth;
 
     @Value("${mail.debug}")
     private String mailDebug;
@@ -38,16 +38,16 @@ public class EmailConfig {
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(mailHost); //ini server email
-        mailSender.setPort(587);
+        mailSender.setPort(mailPort);
         
-        mailSender.setUsername("my.gmail@gmail.com");
-        mailSender.setPassword("password");
+        mailSender.setUsername(mailUsername);
+        mailSender.setPassword(mailPassword);
         
         Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
+        props.put("mail.transport.protocol", mailProtocol);
+        props.put("mail.smtp.auth", mailAuth);
+        props.put("mail.smtp.starttls.enable", mailStarttls);
+        props.put("mail.debug", mailDebug);
         
         return mailSender;
     }
