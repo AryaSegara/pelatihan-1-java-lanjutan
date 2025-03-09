@@ -25,6 +25,7 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> 
                             auth.requestMatchers("/login",
+                                            "/email/send",
                                             // "/users/register",
                                             "/api-docs/**",
                                             "/swagger-ui/**",
