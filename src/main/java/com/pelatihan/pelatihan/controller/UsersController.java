@@ -24,8 +24,8 @@ public class UsersController {
   @PostMapping("/register")
   public ResponseEntity<GenericResponse<Object>> register (
                                                 @RequestBody RegisterUserDto dto) {
-
     userService.register(dto);
+
     return ResponseEntity.ok().body(GenericResponse.builder()
           .success(true)
           .message("Berhasil menambahkan user baru")
