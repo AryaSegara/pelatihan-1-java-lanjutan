@@ -69,7 +69,7 @@ public class ReportServiceImpl implements ReportService{
 
         List<Users> usersList = usersRepository.findAll();
 
-        int currentIndexRow = 1;
+        int currentIndexRow = 1; // guna untuk membuat baris pada excel
         for(Users user : usersList) {
             Row bodyRow = sheet.createRow(currentIndexRow);
 
