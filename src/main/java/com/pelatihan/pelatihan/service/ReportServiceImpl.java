@@ -19,6 +19,7 @@ import com.pelatihan.pelatihan.repository.UsersRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 @Service
 @Slf4j
 public class ReportServiceImpl implements ReportService{
