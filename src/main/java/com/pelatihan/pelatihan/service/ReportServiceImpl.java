@@ -60,7 +60,7 @@ public class ReportServiceImpl implements ReportService{
         usernameCell.setCellStyle(headerStyle);
 
         Cell passwordCell = headerRow.createCell(2);
-        passwordCell.setCellValue("Password");
+        passwordCell.setCellValue("PASSWORD");
         passwordCell.setCellStyle(headerStyle);
 
         Cell statusCell = headerRow.createCell(3);
@@ -91,7 +91,7 @@ public class ReportServiceImpl implements ReportService{
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try{
             workbook.write(outputStream);
-            return outputStream.toByteArray();
+            outputStream.toByteArray();
         }finally{
             workbook.close();
         }

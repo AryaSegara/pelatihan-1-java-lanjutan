@@ -23,7 +23,7 @@ public class ReportController {
         this.reportService = reportService;
     }
     
-     @GetMapping("/generateExcel")
+     @GetMapping("/generate-excel")
     public ResponseEntity<Object> generateExcel(HttpServletResponse response) {
         response.setHeader("Content-Disposition", "attachment; filename=data_user.xlsx");
         try {
