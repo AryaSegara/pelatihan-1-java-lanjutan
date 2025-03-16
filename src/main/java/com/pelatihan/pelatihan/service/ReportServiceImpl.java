@@ -30,7 +30,7 @@ public class ReportServiceImpl implements ReportService{
     }
     
     @Override
-    public Object generateExcel() throws IOException{
+    public Object generateExcel() throws IOException {
         Workbook workbook = new XSSFWorkbook();
 
         Sheet sheet = workbook.createSheet("DATA USER");
