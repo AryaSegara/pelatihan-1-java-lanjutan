@@ -87,7 +87,7 @@ public class ReportServiceImpl implements ReportService{
             currentIndexRow++;
         }
 
-        ByteArrayOutputStream  outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try{
             workbook.write(outputStream);
             return outputStream.toByteArray();

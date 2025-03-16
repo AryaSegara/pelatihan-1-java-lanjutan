@@ -10,10 +10,12 @@ import org.springframework.web.server.ResponseStatusException;
 import com.pelatihan.pelatihan.dto.GenericResponse;
 import com.pelatihan.pelatihan.service.ReportService;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/report")
 public class ReportController {
-    
+
     @Autowired
     private ReportService reportService;
 
@@ -22,7 +24,8 @@ public class ReportController {
     }
     
      @GetMapping("/generateExcel")
-    public ResponseEntity<Object> generateExcel(){
+    public ResponseEntity<Object> generateExcel(HttpServletResponse response) {
+        response.setHeader("Content-Disposition", "attachment; filename=data_user.xlsx");
         try {
             return ResponseEntity.ok()
                                     .body(reportService.generateExcel());
